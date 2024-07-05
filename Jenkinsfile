@@ -9,23 +9,21 @@ pipeline {
 
         stage('Setting Up') {
             steps {                
-                dir(env.TERRAFORM_DIRECTORY) {
-                    script {
-                        switch(env.BRANCH_NAME) {
-                            case "develop":
-                                env.ENV = "dev"
-                                break
-                            case "qa":
-                                env.ENV = "qa"
-                                break                           
-                            case "prod":
-                                env.ENV = "prod"
-                                break
-                            default:
-                                errorBanner("Aborting the build, branch not configured.")
-                                break
-                            }
-                    }
+                script {
+                    switch(env.BRANCH_NAME) {
+                        case "develop":
+                            env.ENV = "dev"
+                            break
+                        case "qa":
+                            env.ENV = "qa"
+                            break                           
+                        case "prod":
+                            env.ENV = "prod"
+                            break
+                        default:
+                            errorBanner("Aborting the build, branch not configured.")
+                            break
+                        }
                 }
             }
         }
@@ -62,5 +60,4 @@ pipeline {
             }
         }
     }
-
 }
