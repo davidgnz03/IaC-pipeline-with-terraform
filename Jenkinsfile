@@ -21,7 +21,8 @@ pipeline {
                             env.ENV = "prod"
                             break
                         default:
-                            errorBanner("Aborting the build, branch not configured.")
+                            echo "Branch name '${env.BRANCH_NAME}' is not recognized. Setting environment to 'unknown'."
+                            error "Unrecognized branch name. Failing the build."
                             break
                         }
                 }
@@ -57,6 +58,24 @@ pipeline {
                 script {
                     echo 'Running terraform apply'
                 }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                echo 'This will always run, even if the build fails.'
+            }
+        }
+        success {
+            script {
+                echo 'This runs only if the build succeeds.'
+            }
+        }
+        failure {
+            script {
+                echo 'This runs only if the build fails.'
             }
         }
     }
